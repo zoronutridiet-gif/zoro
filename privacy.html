@@ -8,37 +8,79 @@
 </head>
 <body>
 <h1>Zoro - Privacy Policy</h1>
-<p>Last updated: 1 October 2026</p>
+<p>Last updated: 2 October 2026</p>
 
 <h2>What Zoro is</h2>
-<p>Zoro is a personal desktop assistant that runs on the computer of the Zoro NutriDiet team. It is used only with the team's own accounts and is not offered to the public.</p>
+<p>Zoro is a private desktop assistant. I, Dr. Srinivas Patel Punyala (Zoro NutriDiet), am its only user. It runs on my own Windows laptop and helps me make and publish evidence-based nutrition videos on my own YouTube channel. Zoro is not offered to anyone else.</p>
 
 <h2>YouTube API Services</h2>
-<p>Zoro uses <strong>YouTube API Services</strong> to upload the owner's own videos to the owner's own YouTube channel and to read that channel's details and analytics. By using Zoro you are agreeing to be bound by the <a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a>. Information obtained through YouTube API Services is also subject to the <a href="https://policies.google.com/privacy">Google Privacy Policy</a>.</p>
+<p>Zoro uses <strong>YouTube API Services</strong>. By using Zoro, you agree to be bound by the <a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a>. Information that Zoro gets through YouTube API Services is also subject to the <a href="https://policies.google.com/privacy">Google Privacy Policy</a>.</p>
 
-<h2>Google data Zoro accesses</h2>
-<p>With the owner's permission, Zoro uses these Google APIs:</p>
+<h2>Google sign-in and scopes</h2>
+<p>Zoro signs in to one Google account, my own, through an OAuth 2.0 Desktop client. It asks for these scopes:</p>
 <ul>
-<li>YouTube Data API (youtube.upload, youtube.readonly, youtube.force-ssl): to read the owner's channel details and to upload the owner's videos, thumbnails and captions.</li>
-<li>YouTube Analytics API (yt-analytics.readonly): to read performance reports for the owner's own channel.</li>
-<li>Google Calendar API (calendar.events): to add and read the owner's content schedule events.</li>
+<li>youtube.upload: to upload my videos and set their thumbnails.</li>
+<li>youtube.readonly: to read my own channel details and my video statistics.</li>
+<li>youtube.force-ssl: to upload subtitle and caption tracks to my videos, to check which tracks they already have, and to read comments on my own videos.</li>
+<li>yt-analytics.readonly: to read analytics for my own channel.</li>
+<li>calendar.events: to add and read events in my content calendar. This is not YouTube data.</li>
 </ul>
 
+<h2>Publishing</h2>
+<p>Zoro publishes to YouTube only through the official YouTube Data API. It uploads a video when I ask it to, or on a schedule I set up. By default, each upload carries the altered or synthetic content disclosure (containsSyntheticMedia) and is marked as not made for kids.</p>
+<p>For a manual upload, Zoro opens youtube.com/upload in my normal web browser and I upload the video by hand. Zoro does not control that page.</p>
+<p>Zoro has no YouTube Studio browser mode and does not use any third-party upload service for YouTube. Zoro's general web tools are blocked from opening or fetching YouTube pages.</p>
+
+<h2>Comments</h2>
+<p>Zoro reads comments only on my own videos. A Groq-hosted AI model groups the viewer questions so I can plan videos that answer them. Zoro never posts, edits or deletes comments.</p>
+
+<h2>Public research data</h2>
+<p>Zoro also uses a YouTube Data API key to read public data: public channel details, public video lists and statistics, search results and trending charts. I use this to study what works on health channels. Zoro does not scrape YouTube, and it never takes any action on other channels.</p>
+
 <h2>How the data is used</h2>
-<p>Data is used only to carry out tasks the owner asks for, such as publishing a video or preparing a performance report.</p>
+<p>Zoro uses this data only to do what I ask, such as publishing a video, preparing a performance report or planning content. It does not sell data and does not use it for advertising.</p>
+
+<h2>AI processing</h2>
+<p>In chat, reports and agent tasks, data that Zoro gets from YouTube API Services is processed by open models hosted by Groq. This covers my own channel analytics, my video statistics, the text of public comments on my own videos, and public channel and video statistics. By default, Groq does not keep inference data (see <a href="https://console.groq.com/docs/your-data">Groq: Your Data</a>).</p>
+<p>Zoro uses Groq's free tier, which has rate limits and daily limits. If Groq is unavailable during such a task, Zoro tells me it cannot process the YouTube data right now instead of passing it to another AI.</p>
+<p>Voice is the exception. If I ask about my channel in a voice conversation, the spoken answer goes through Google's Gemini Live API.</p>
+<p>Zoro may also turn viewer questions into short learning-topic names, such as "iron in spinach", and research those topics later with Gemini or web search.</p>
+<p>For other tasks, such as writing scripts or research on sources that are not YouTube, Zoro may use the Google Gemini API. The free tier of the Gemini API may use prompts to improve Google products (see the <a href="https://ai.google.dev/gemini-api/terms">Gemini API terms</a>).</p>
+<p>Separately, when I ask, Zoro may send the link of a public YouTube video to the Gemini API so that Gemini can summarise the video. This happens in a separate task that has not used any data from YouTube API Services. Zoro does not download videos or captions.</p>
+<p>Text is sent to an AI model only to carry out my request. It is not sold and is not used for advertising.</p>
+
+<h2>Telegram and notifications</h2>
+<p>If I chat with Zoro through my own Telegram bot, Zoro's replies pass through Telegram. These replies may include my own channel analytics or summaries of viewer questions. If I turn on ntfy, Zoro sends only short notifications to my own ntfy topic.</p>
 
 <h2>Storage</h2>
-<p>OAuth tokens and all data stay on the owner's own computer. Tokens are kept in local protected storage. No data is stored on any Zoro server. Zoro does not use cookies or tracking, and stores no information on any other user's device.</p>
-<p>Channel and analytics data read through YouTube API Services is kept only as long as needed for the owner's reports and is refreshed or deleted within 30 days, as the YouTube API Services Developer Policies require.</p>
+<p>Zoro keeps its data on my laptop. OAuth tokens are encrypted with Windows DPAPI, so only my Windows account can read them. API keys are kept in Windows Credential Manager. Other data is kept in local files and a local SQLite database. There is no hosted Zoro server. Zoro's only server listens on 127.0.0.1 on my laptop.</p>
+<p>Zoro keeps its last 14 daily backups on my laptop. A backup can contain YouTube data, so that data can stay in a backup for up to 14 days after it is deleted elsewhere.</p>
 
 <h2>Sharing</h2>
-<p>Zoro does not sell or share Google user data. Text or media may be sent to the AI model provider chosen by the owner (for example Google Gemini) only to process the owner's request.</p>
+<p>Zoro does not sell Google user data or share it with anyone for their own use. Data leaves my laptop in these cases:</p>
+<ul>
+<li>Calls to Google's own APIs (YouTube Data API, YouTube Analytics API, Google Calendar API).</li>
+<li>Text that contains YouTube data sent to open models hosted by Groq, as described above.</li>
+<li>Text for other tasks, voice conversations, learning topics and links to public YouTube videos sent to the Gemini API, as described above.</li>
+<li>Replies that pass through Telegram when I chat with Zoro through my own Telegram bot.</li>
+<li>Short notifications sent to my own ntfy topic, if I turn them on.</li>
+</ul>
+
+<h2>How long data is kept</h2>
+<p>A daily job deletes or redacts the YouTube data Zoro has stored once it is 30 days old. This covers raw files, reports, notes, AI lessons, learning topics taken from viewer questions, agent outputs, and chat messages and workflow checkpoints that contain YouTube data. Backups roll off as described under Storage.</p>
+<p>Records of my own uploads (the video IDs and links of videos I uploaded to my channel) are kept until I press Disconnect or "Delete stored YouTube data".</p>
+<p>Zoro's skills keep only general lessons about video formats. They contain no exact YouTube statistics.</p>
 
 <h2>Google API Services User Data Policy</h2>
 <p>Zoro's use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
 
 <h2>Revoking access</h2>
-<p>Access can be removed at any time from the Google security settings page at <a href="https://security.google.com/settings/security/permissions">security.google.com/settings/security/permissions</a> (also at <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>). Deleting the local token file also removes Zoro's access, and the owner can ask for any stored data to be deleted at the contact address below.</p>
+<p>The Disconnect button in Zoro revokes the token at Google, deletes the local token files and deletes the YouTube data Zoro has stored (backups roll off within 14 days). If revoking at Google fails, Zoro shows a warning and a link to the Google permissions page, where I can remove access myself.</p>
+<p>A separate "Delete stored YouTube data" button deletes the stored YouTube data even when Zoro is not connected to Google.</p>
+<p>Access can also be removed at any time from the Google security settings page at <a href="https://security.google.com/settings/security/permissions">security.google.com/settings/security/permissions</a> (also at <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>).</p>
+
+<h2>Cookies</h2>
+<p>This website sets no cookies and has no tracking. Zoro keeps my Instagram and Facebook sign-ins in a separate local Chrome profile for posting to those sites. YouTube and Google are not used through that profile; Google access uses the encrypted OAuth token. That profile stays on my laptop and is not shared. Zoro does not place cookies on anyone else's device.</p>
 
 <h2>Terms</h2>
 <p>See the <a href="terms.html">Zoro Terms of Service</a>.</p>
