@@ -24,15 +24,15 @@
 <li>Zoro uploads only to my own YouTube channel, and only content I made or have the rights to publish.</li>
 <li>Zoro publishes to YouTube only through the official YouTube Data API. It has no YouTube Studio browser mode and does not use any third-party upload service for YouTube.</li>
 <li>For a manual upload, Zoro opens youtube.com/upload in my normal web browser and I upload the video by hand. Zoro does not control that page.</li>
-<li>In chat, reports and agent tasks, data from YouTube API Services is processed by open models hosted by Groq. Voice conversations use Google's Gemini Live API. Details are in the <a href="privacy.html">Zoro Privacy Policy</a>.</li>
+<li>When a chat, agent task or workflow gets data from YouTube API Services, Zoro processes that data with open models hosted by Groq. My own spoken words in voice conversations go to Google's Gemini Live API. The <a href="privacy.html">Zoro Privacy Policy</a> gives the details and lists the known exceptions.</li>
 <li>Zoro reads other channels only as public data, for research. It never takes any action on them.</li>
 <li>My videos follow the YouTube Community Guidelines, including the medical misinformation policy and the rules for disclosing altered or synthetic content.</li>
 <li>Zoro does not manipulate views, likes, comments or subscribers.</li>
-<li>Zoro does not scrape YouTube. Its general web tools are blocked from opening or fetching YouTube pages. It uses only the official YouTube API Services.</li>
+<li>Zoro has no code that scrapes YouTube pages or downloads videos or captions. It gets YouTube API data only through the official YouTube API Services. Separately, it can send links of public videos to Google's Gemini API for a summary, as the <a href="privacy.html">Zoro Privacy Policy</a> describes. Its browser agent and page-reading tools are blocked from YouTube pages. One general tool for calling web APIs does not block YouTube addresses yet.</li>
 </ul>
 
 <h2>5. Revoking access</h2>
-<p>The Disconnect button in Zoro revokes the token at Google, deletes the local tokens and deletes the stored YouTube data (local backups roll off within 14 days). If revoking at Google fails, Zoro shows a warning and a link to the Google permissions page. A separate "Delete stored YouTube data" button deletes the stored YouTube data even when Zoro is not connected to Google. Google account access can also be revoked at any time at <a href="https://security.google.com/settings/security/permissions">security.google.com/settings/security/permissions</a>.</p>
+<p>The Disconnect button in Zoro revokes the token at Google, deletes the local tokens and deletes the stored YouTube data that Zoro's 30-day job covers. It also rebuilds the local backups by the same rules. If revoking at Google fails, Zoro shows a warning and a link to the Google permissions page. A separate "Delete stored YouTube data" button deletes the same data even when Zoro is not connected to Google. Some copies are not yet covered. The <a href="privacy.html">Zoro Privacy Policy</a> lists them. Google account access can also be revoked at any time at <a href="https://security.google.com/settings/security/permissions">security.google.com/settings/security/permissions</a>.</p>
 
 <h2>6. Contact</h2>
 <p><a href="mailto:zoronutridiet@gmail.com">zoronutridiet@gmail.com</a></p>

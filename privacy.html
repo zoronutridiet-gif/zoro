@@ -29,54 +29,105 @@
 <h2>Publishing</h2>
 <p>Zoro publishes to YouTube only through the official YouTube Data API. It uploads a video when I ask it to, or on a schedule I set up. By default, each upload carries the altered or synthetic content disclosure (containsSyntheticMedia) and is marked as not made for kids.</p>
 <p>For a manual upload, Zoro opens youtube.com/upload in my normal web browser and I upload the video by hand. Zoro does not control that page.</p>
-<p>Zoro has no YouTube Studio browser mode and does not use any third-party upload service for YouTube. Zoro's general web tools are blocked from opening or fetching YouTube pages.</p>
+<p>Zoro has no YouTube Studio browser mode and does not use any third-party upload service for YouTube.</p>
 
 <h2>Comments</h2>
-<p>Zoro reads comments only on my own videos. A Groq-hosted AI model groups the viewer questions so I can plan videos that answer them. Zoro never posts, edits or deletes comments.</p>
+<p>Zoro reads comments only on my own videos. Before it reads them, it checks that the video is on my channel. A Groq-hosted AI model groups the viewer questions so I can plan videos that answer them. Zoro never posts, edits or deletes comments. The exceptions listed under AI processing also apply to comment text.</p>
 
 <h2>Public research data</h2>
-<p>Zoro also uses a YouTube Data API key to read public data: public channel details, public video lists and statistics, search results and trending charts. I use this to study what works on health channels. Zoro does not scrape YouTube, and it never takes any action on other channels.</p>
+<p>Zoro also uses a YouTube Data API key to read public data: public channel details, public video lists and statistics, search results and trending charts. I use this to study what works on health channels. Zoro never takes any action on other channels.</p>
+<p>Zoro has no code that scrapes YouTube pages or downloads videos or captions. Its browser agent and its page-reading tools (fetch_url and crawl_docs) are blocked from YouTube pages, including redirects to them. One general tool for calling web APIs (http_request) does not block YouTube addresses yet.</p>
 
 <h2>How the data is used</h2>
 <p>Zoro uses this data only to do what I ask, such as publishing a video, preparing a performance report or planning content. It does not sell data and does not use it for advertising.</p>
 
 <h2>AI processing</h2>
-<p>In chat, reports and agent tasks, data that Zoro gets from YouTube API Services is processed by open models hosted by Groq. This covers my own channel analytics, my video statistics, the text of public comments on my own videos, and public channel and video statistics. By default, Groq does not keep inference data (see <a href="https://console.groq.com/docs/your-data">Groq: Your Data</a>).</p>
-<p>Zoro uses Groq's free tier, which has rate limits and daily limits. If Groq is unavailable during such a task, Zoro tells me it cannot process the YouTube data right now instead of passing it to another AI.</p>
-<p>Voice is the exception. If I ask about my channel in a voice conversation, the spoken answer goes through Google's Gemini Live API.</p>
-<p>Zoro may also turn viewer questions into short learning-topic names, such as "iron in spinach", and research those topics later with Gemini or web search.</p>
-<p>For other tasks, such as writing scripts or research on sources that are not YouTube, Zoro may use the Google Gemini API. The free tier of the Gemini API may use prompts to improve Google products (see the <a href="https://ai.google.dev/gemini-api/terms">Gemini API terms</a>).</p>
-<p>Separately, when I ask, Zoro may send the link of a public YouTube video to the Gemini API so that Gemini can summarise the video. This happens in a separate task that has not used any data from YouTube API Services. Zoro does not download videos or captions.</p>
-<p>Text is sent to an AI model only to carry out my request. It is not sold and is not used for advertising.</p>
+<p>When a chat, agent task or workflow gets data from one of Zoro's YouTube API tools, Zoro marks that task as private. This covers my own channel analytics, my video statistics, the text of public comments on my own videos, and public channel and video statistics, search results and trending charts. From then on, every AI call in that task uses only open models hosted by Groq. The same applies to any helper task it starts and to the chat it belongs to. A chat stays private after the first answer that used YouTube data.</p>
+<p>In a private task, Zoro refuses its Gemini tools: Google search grounding, image and video generation, Gemini text-to-speech, screen and camera vision, video summaries and the browser agent. Web search uses only plain DuckDuckGo or Bing results, and the Groq model writes the answer. Lessons saved in a private task are stored without a Gemini embedding.</p>
+<p>Groq is a third-party AI service, so this data is sent to Groq. Groq's own policy says that, by default, it does not keep inference data (see <a href="https://console.groq.com/docs/your-data">Groq: Your Data</a>). Zoro does not check or change Groq's settings.</p>
+<p>Zoro uses Groq's free tier, which has rate limits and daily limits. If no Groq model answers during a private task, Zoro tells me it cannot process the YouTube data right now. It does not pass the data to another AI.</p>
+
+<h3>Voice</h3>
+<p>In a voice conversation, my spoken words go to Google's Gemini Live API. If an answer uses YouTube data, Zoro shows it on my screen only. Gemini Live gets a short fixed notice instead of the answer. Zoro also stops sending my screen to Gemini for the rest of that voice session, even if it reconnects.</p>
+<p>Answers that use YouTube data are read aloud only by voices that run on my laptop, or not at all.</p>
+
+<h3>Known exceptions</h3>
+<p>The code does not yet keep YouTube data private in these cases:</p>
+<ul>
+<li><strong>Self-review.</strong> Each night, Zoro sends short excerpts of the past 7 days of its tasks to Gemini to look for gaps in its skills. Each week, it sends short excerpts of the past 30 days of tasks to Gemini to suggest new workflows, and saves those suggestions as files. Neither step leaves out private tasks, so the excerpts can contain answers based on YouTube data and the text of viewer comments.</li>
+<li><strong>Learning topics.</strong> Zoro may turn viewer questions, or a chat about my channel, into short learning-topic names such as "iron in spinach". Topics that Zoro takes straight from my analytics or comments are researched privately and deleted after 30 days. Topics added by the comment FAQ workflow or by the summary of a chat are saved as ordinary topics, and so is a YouTube topic whose name already exists as an ordinary topic. Zoro keeps those topics, may research them at night with Gemini and web search, and may list them in daily and weekly notes that Gemini writes.</li>
+<li><strong>Nightly video search.</strong> Zoro's nightly learning uses YouTube Data API search to find public videos on its topics. It sends the links of those videos to Gemini so that Gemini can summarise them, and it keeps the links in its list of sources. This step does not run as a private task.</li>
+<li><strong>Saved data opened later.</strong> A saved YouTube report or data file is not private on its own. If I ask Zoro in a new task to open one, or I paste YouTube data into a new task or a clipboard hotkey, Zoro may not mark that task as private. The text can then go to Gemini.</li>
+<li><strong>Screen.</strong> If I share my screen with Gemini Live, or use Zoro's screen tools or hotkeys, while YouTube data is on screen, the image goes to Gemini. A new voice session sends my screen until its first answer that uses YouTube data. Zoro's browser agent, which runs on Gemini, is not blocked from Zoro's own local dashboard or from saved report files.</li>
+<li><strong>Search queries.</strong> In a private task, the search queries that the Groq model writes can contain words from YouTube data. They go to DuckDuckGo or Bing. Private research on a learning topic also sends queries to PubMed, arXiv, GitHub, Hugging Face and YouTube search. A private task can also read web pages it chooses.</li>
+<li><strong>Other services.</strong> In a private task, Zoro does not block the tools that send text elsewhere: notifications to ntfy or my Telegram bot, web API requests (http_request), shell commands that a task runs, my local n8n automations, and my local Open Notebook app, which passes text to the embedding service it is set up with. Text sent this way can contain YouTube data.</li>
+<li><strong>Daily notes.</strong> My own typed messages from a chat that used YouTube data can appear in the daily notes that Zoro writes with Gemini.</li>
+<li><strong>Whiteboard narration.</strong> When Zoro draws a whiteboard explanation in a private task, the dashboard may read the steps aloud with any browser voice, including online voices from Google or Microsoft.</li>
+<li><strong>My own words and errors.</strong> My spoken questions always go to Gemini Live, so if I read out YouTube numbers, Gemini hears them. If a private answer fails with an unexpected error, Gemini Live may receive the error message.</li>
+<li><strong>Other AI apps.</strong> Other AI apps on my laptop, such as Claude Code, can connect to Zoro through MCP. They get a short notice instead of any answer built on YouTube data. They can still read the names of Zoro's skills and research topics, and some of these may come from viewer questions.</li>
+</ul>
+
+<h3>Other tasks</h3>
+<p>For tasks that do not use YouTube API data, such as writing scripts or research on other sources, Zoro may use the Google Gemini API. The free tier of the Gemini API may use prompts to improve Google products (see the <a href="https://ai.google.dev/gemini-api/terms">Gemini API terms</a>).</p>
+<p>When I ask, Zoro may send the link of a public YouTube video to the Gemini API so that Gemini can summarise the video. I do this in a separate task, because Zoro refuses Gemini tools in a task that has used YouTube API data. The nightly video search above is the exception. Zoro does not download videos or captions.</p>
+<p>Text is sent to an AI model only to carry out my requests and the scheduled jobs I set up. It is not sold and is not used for advertising.</p>
 
 <h2>Telegram and notifications</h2>
-<p>If I chat with Zoro through my own Telegram bot, Zoro's replies pass through Telegram. These replies may include my own channel analytics or summaries of viewer questions. If I turn on ntfy, Zoro sends only short notifications to my own ntfy topic.</p>
+<p>If I chat with Zoro through my own Telegram bot, Zoro's replies pass through Telegram. These replies may include my own channel analytics or summaries of viewer questions. When a workflow waits for my approval, Zoro can send me a preview of up to 600 characters through Telegram or ntfy, and the preview can contain YouTube data. If I turn on ntfy, Zoro sends short notifications to my own ntfy topic. These can contain YouTube data too.</p>
 
 <h2>Storage</h2>
 <p>Zoro keeps its data on my laptop. OAuth tokens are encrypted with Windows DPAPI, so only my Windows account can read them. API keys are kept in Windows Credential Manager. Other data is kept in local files and a local SQLite database. There is no hosted Zoro server. Zoro's only server listens on 127.0.0.1 on my laptop.</p>
-<p>Zoro keeps its last 14 daily backups on my laptop. A backup can contain YouTube data, so that data can stay in a backup for up to 14 days after it is deleted elsewhere.</p>
+<p>Zoro keeps its last 14 daily backups on my laptop. A new backup leaves out the YouTube data that the 30-day job covers. Its copy of the database is redacted the same way, and if that fails, the backup holds no database at all. When the 30-day job, Disconnect or "Delete stored YouTube data" runs, Zoro rebuilds the older backups by the same rules. YouTube data that the job does not yet cover (listed below) can still be in backups.</p>
+<p>Zoro also keeps a local git history of its brain folder on my laptop. YouTube reports and comment FAQ notes are kept out of new commits. Other files listed below can enter that history, and older commits are never rewritten.</p>
 
 <h2>Sharing</h2>
 <p>Zoro does not sell Google user data or share it with anyone for their own use. Data leaves my laptop in these cases:</p>
 <ul>
 <li>Calls to Google's own APIs (YouTube Data API, YouTube Analytics API, Google Calendar API).</li>
-<li>Text that contains YouTube data sent to open models hosted by Groq, as described above.</li>
-<li>Text for other tasks, voice conversations, learning topics and links to public YouTube videos sent to the Gemini API, as described above.</li>
-<li>Replies that pass through Telegram when I chat with Zoro through my own Telegram bot.</li>
-<li>Short notifications sent to my own ntfy topic, if I turn them on.</li>
+<li>YouTube data sent to open models hosted by Groq, as described above.</li>
+<li>Text for other tasks, my voice conversations and links to public YouTube videos, sent to the Gemini API. The cases under Known exceptions also send text to Gemini.</li>
+<li>Replies, approval previews and notifications sent through my own Telegram bot and my own ntfy topic.</li>
+<li>Search queries sent to search services, and text that a task sends through web API requests, n8n or Open Notebook, as described above.</li>
 </ul>
 
 <h2>How long data is kept</h2>
-<p>A daily job deletes or redacts the YouTube data Zoro has stored once it is 30 days old. This covers raw files, reports, notes, AI lessons, learning topics taken from viewer questions, agent outputs, and chat messages and workflow checkpoints that contain YouTube data. Backups roll off as described under Storage.</p>
-<p>Records of my own uploads (the video IDs and links of videos I uploaded to my channel) are kept until I press Disconnect or "Delete stored YouTube data".</p>
-<p>Zoro's skills keep only general lessons about video formats. They contain no exact YouTube statistics.</p>
+<p>A job deletes or redacts the YouTube data Zoro has stored once it is 30 days old. It runs when Zoro's background service starts and then every 24 hours while the service runs. If the service is not running, for example when I use only the command line or Telegram, the job waits until the service starts again.</p>
+<p>It deletes:</p>
+<ul>
+<li>raw YouTube API files in Zoro's research folder;</li>
+<li>YouTube reports and comment FAQ notes;</li>
+<li>lessons saved from YouTube data;</li>
+<li>learning topics taken straight from my analytics or comments;</li>
+<li>YouTube experiments.</li>
+</ul>
+<p>It redacts:</p>
+<ul>
+<li>chat replies that used YouTube data, the chat summaries made from them, and the lessons taken from those summaries;</li>
+<li>Zoro's records of agent tasks that called a YouTube API tool, of the comment FAQ workflow and of the tasks that started it, with their tool log rows and saved workflow checkpoints;</li>
+<li>YouTube lines in daily notes.</li>
+</ul>
+<p>Deleted text is overwritten in Zoro's main database file, and the database is compacted after each pass that changed it.</p>
+<p>Records of my own uploads (the video IDs and links of videos I uploaded to my channel) are kept until I press Disconnect or "Delete stored YouTube data". Copies of these links in Zoro's own tool logs and task records can remain after that.</p>
+<p>The job does not yet delete:</p>
+<ul>
+<li>Zoro's records of some private tasks: other workflows that used YouTube tools (for example the daily briefing, which can use YouTube search), tasks that asked an expert agent that used them, and later turns of a private chat or voice session. The chat messages themselves are redacted.</li>
+<li>Tool log rows of other tools used in a private task, such as charts, whiteboards, notifications and web requests. Each row keeps the tool's input and up to 500 characters of its output.</li>
+<li>Files that a private task saves outside the reports folder, such as study notes and notes in the notes folder, and data files that cannot carry the YouTube tag. These go into backups and git.</li>
+<li>Learning topics saved as ordinary topics (see above), skills and expert agents created in a private task, Zoro's source and evidence lists, and its workflow suggestion files.</li>
+<li>Charts, whiteboard drawings, audio files, slide images, caption files and screen recordings made from YouTube data. Whiteboard drawings go into backups and git.</li>
+<li>Log files, which can hold short pieces of a private answer or video IDs.</li>
+<li>Copies already sent to Telegram, ntfy or other services. Zoro cannot delete those.</li>
+</ul>
+<p>Zoro is told to write only general lessons into its skills, in rounded words and without exact YouTube statistics. Skills are kept permanently, and the code does not check what an agent writes into them.</p>
 
 <h2>Google API Services User Data Policy</h2>
 <p>Zoro's use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
 
 <h2>Revoking access</h2>
-<p>The Disconnect button in Zoro revokes the token at Google, deletes the local token files and deletes the YouTube data Zoro has stored (backups roll off within 14 days). If revoking at Google fails, Zoro shows a warning and a link to the Google permissions page, where I can remove access myself.</p>
-<p>A separate "Delete stored YouTube data" button deletes the stored YouTube data even when Zoro is not connected to Google.</p>
+<p>The Disconnect button in Zoro first revokes the token at Google. Then it deletes the local token files and all the stored YouTube data that the 30-day job covers, at any age, including the records of my own uploads. It also rebuilds the older backups. If revoking at Google fails, Zoro shows a warning and a link to the Google permissions page, where I can remove access myself.</p>
+<p>A separate "Delete stored YouTube data" button deletes the same data even when Zoro is not connected to Google.</p>
+<p>Neither button touches a workflow that is still running or waiting for my approval at that moment. Neither removes the items that the 30-day job does not yet delete.</p>
+<p>If I remove access on the Google page instead of pressing Disconnect, Zoro does not notice. Its stored YouTube data is then removed only by the 30-day job or the delete button.</p>
 <p>Access can also be removed at any time from the Google security settings page at <a href="https://security.google.com/settings/security/permissions">security.google.com/settings/security/permissions</a> (also at <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>).</p>
 
 <h2>Cookies</h2>
